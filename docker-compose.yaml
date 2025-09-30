@@ -38,7 +38,7 @@ services:
       - MAIL_FROM_NAME="${APP_NAME}"
     volumes:
       - sendemail_storage_data:/var/www/html/storage/app
-      - ./storage/logs:/var/www/html/storage/logs
+      - sendemail_logs_data:/var/www/html/storage/logs
     networks:
       - microservices_network
     depends_on:
@@ -64,6 +64,8 @@ networks:
 
 volumes:
   sendemail_storage_data:
+    driver: local
+  sendemail_logs_data:
     driver: local
   sendemail_db_data:
     driver: local

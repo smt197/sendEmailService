@@ -33,8 +33,6 @@ RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs storage/app b
     && touch ${OCTANE_STATE_FILE} \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache \
-    && chmod -R 777 storage/logs \
-    && chmod 666 storage/logs/laravel.log \
     && chmod 666 ${OCTANE_STATE_FILE}
 
 # Copy s6-overlay services for Laravel (before switching user)

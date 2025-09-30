@@ -15,12 +15,23 @@ cd "$APP_BASE_DIR"
 if [ "$DISABLE_DEFAULT_CONFIG" = "false" ] && [ -f "$APP_BASE_DIR/artisan" ] && [ "$AUTORUN_ENABLED" = "true" ]; then
     echo "📋 Running Laravel automations..."
 
-    # Fix storage permissions (ignore errors if volume mounted)
+    # Fix storage permissions for mounted volumes
     echo "🔧 Setting up storage permissions..."
     mkdir -p storage/logs storage/framework/{cache,sessions,views} storage/app bootstrap/cache 2>/dev/null || true
-    touch storage/logs/laravel.log 2>/dev/null || true
+
+    # Ensure log directory and file are writable
+    if [ ! -f storage/logs/laravel.log ]; then
+        touch storage/logs/laravel.log 2>/dev/null || true
+    fi
+
+    # Fix permissions on mounted log volume
+    chown -R www-data:www-data storage/logs 2>/dev/null || true
     chmod -R 777 storage/logs 2>/dev/null || true
-    chmod 666 storage/logs/laravel.log 2>/dev/null || true
+
+    if [ -f storage/logs/laravel.log ]; then
+        chown www-data:www-data storage/logs/laravel.log 2>/dev/null || true
+        chmod 666 storage/logs/laravel.log 2>/dev/null || true
+    fi
 
     # Test log file writability
     if [ ! -w storage/logs/laravel.log ]; then
