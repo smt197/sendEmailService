@@ -5,7 +5,6 @@ services:
     build:
       context: .
       dockerfile: email.dockerfile
-      command: php artisan queue:work --queue=send_email --sleep=3 --tries=3
     environment:
       - AUTORUN_ENABLED=true
       - AUTORUN_LARAVEL_OCTANE=true
