@@ -1,0 +1,6 @@
+#!/command/execlineb -P
+with-contenv
+cd /var/www/html
+loopwhilex
+foreground { php artisan schedule:run }
+s6-sleep 60

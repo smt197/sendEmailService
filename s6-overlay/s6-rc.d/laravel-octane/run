@@ -1,0 +1,15 @@
+#!/bin/sh
+cd /var/www/html
+
+# Ensure Octane state file has correct permissions
+chmod 666 storage/framework/octane-state.json 2>/dev/null || true
+
+# Start Octane (OCTANE_STATE_FILE is already set in Dockerfile ENV)
+exec php artisan octane:start \
+    --server=frankenphp \
+    --host="${OCTANE_HOST:-0.0.0.0}" \
+    --port="${OCTANE_PORT:-8002}" \
+    --admin-port="${OCTANE_ADMIN_PORT:-2019}" \
+    --workers=auto \
+    --max-requests=1000 \
+    --watch

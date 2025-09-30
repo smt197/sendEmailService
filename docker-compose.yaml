@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  sendemail-app:
+    build:
+      context: .
+      dockerfile: email.dockerfile
+      command: php artisan queue:work --queue=send_email --sleep=3 --tries=3
+    environment:
+      - AUTORUN_ENABLED=true
+      - AUTORUN_LARAVEL_OCTANE=true
+      - OCTANE_SERVER=frankenphp
+      - OCTANE_HOST=0.0.0.0
+      - OCTANE_PORT=8002
+      - OCTANE_ADMIN_PORT=2019
+      - APP_NAME=${APP_NAME}
+      - APP_ENV=${APP_ENV}
+      - APP_KEY=${APP_KEY} # Doit être généré
+      - APP_DEBUG=${APP_DEBUG}
+      - APP_URL=${APP_URL}
+      - LOG_CHANNEL=${LOG_CHANNEL}
+      - LOG_STACK=${LOG_STACK}
+      - LOG_DEPRECATIONS_CHANNEL=${LOG_DEPRECATIONS_CHANNEL}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - DB_CONNECTION=${DB_CONNECTION}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - QUEUE_CONNECTION=${QUEUE_CONNECTION}
+      # Variables pour l'envoi d'email
+      - MAIL_MAILER=${MAIL_MAILER}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS}
+      - MAIL_FROM_NAME="${APP_NAME}"
+    volumes:
+      - sendemail_storage_data:/var/www/html/storage/app
+      - ./storage/logs:/var/www/html/storage/logs
+    networks:
+      - microservices_network
+    depends_on:
+      - sendemail-db
+    restart: unless-stopped
+
+  sendemail-db:
+    image: mysql:8.0
+    container_name: ${DB_CONTAINER_NAME:-sendemail_db}
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE:-emailservice}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_HOST='%'
+    volumes:
+      - sendemail_db_data:/var/lib/mysql
+    networks:
+      - microservices_network
+    restart: unless-stopped
+
+networks:
+  microservices_network:
+    external: true
+
+volumes:
+  sendemail_storage_data:
+    driver: local
+  sendemail_db_data:
+    driver: local

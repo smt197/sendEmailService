@@ -1,0 +1,12 @@
+#!/command/execlineb -P
+with-contenv
+cd /var/www/html
+php
+artisan
+queue:work
+--queue=send_email
+--tries=3
+--backoff=3
+--max-jobs=1000
+--max-time=3600
+--timeout=60
