@@ -42,7 +42,8 @@ services:
     networks:
       - microservices_network
     depends_on:
-      - sendemail-db
+      sendemail-db:
+        condition: service_healthy
     restart: unless-stopped
 
   sendemail-db:
@@ -56,6 +57,12 @@ services:
       - sendemail_db_data:/var/lib/mysql
     networks:
       - microservices_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
     restart: unless-stopped
 
 networks:
