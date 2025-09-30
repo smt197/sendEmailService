@@ -40,29 +40,26 @@ services:
       - sendemail_logs_data:/var/www/html/storage/logs
     networks:
       - microservices_network
-    depends_on:
-      sendemail-db:
-        condition: service_healthy
-    restart: unless-stopped
 
-  sendemail-db:
-    image: mysql:8.0
-    container_name: sendemail-db
-    environment:
-      - MYSQL_DATABASE=${DB_DATABASE:-sendemail-db}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_ROOT_HOST=%
-    volumes:
-      - sendemail_db_data:/var/lib/mysql
-    networks:
-      - microservices_network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
-      interval: 3s
-      timeout: 5s
-      retries: 30
-      start_period: 20s
-    restart: unless-stopped
+
+#   sendemail-db:
+#     image: mysql:8.0
+#     container_name: sendemail-db
+#     environment:
+#       - MYSQL_DATABASE=${DB_DATABASE:-sendemail-db}
+#       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+#       - MYSQL_ROOT_HOST=%
+#     volumes:
+#       - sendemail_db_data:/var/lib/mysql
+#     networks:
+#       - microservices_network
+#     healthcheck:
+#       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
+#       interval: 3s
+#       timeout: 5s
+#       retries: 30
+#       start_period: 20s
+#     restart: unless-stopped
 
 networks:
   microservices_network:
