@@ -22,7 +22,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-         $this->createDatabaseIfNotExists();
+         // Database is automatically created by MySQL container via MYSQL_DATABASE env var
+         // $this->createDatabaseIfNotExists();
     }
 
         private function createDatabaseIfNotExists(): void
