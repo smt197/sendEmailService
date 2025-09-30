@@ -51,7 +51,7 @@ services:
     environment:
       - MYSQL_DATABASE=${DB_DATABASE:-emailservice}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_ROOT_HOST='%'
+      - MYSQL_ROOT_HOST=%
     volumes:
       - sendemail_db_data:/var/lib/mysql
     networks:
