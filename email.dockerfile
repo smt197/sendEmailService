@@ -44,6 +44,7 @@ COPY --chown=root:root --chmod=755 automations.sh /etc/entrypoint.d/60-laravel-a
 RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs storage/app bootstrap/cache \
     && touch storage/logs/laravel.log \
     && touch ${OCTANE_STATE_FILE} \
+    && rm -f bootstrap/cache/packages.php bootstrap/cache/services.php bootstrap/cache/config.php \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache \
     && chmod 666 ${OCTANE_STATE_FILE}
@@ -58,6 +59,5 @@ RUN find /etc/s6-overlay -name "run" -type f -exec chmod +x {} \; \
 # Final setup as www-data
 USER www-data
 
-# Run post-install scripts
-RUN composer dump-autoload --optimize \
-    && php artisan octane:install --server=frankenphp --no-interaction 2>/dev/null || true
+# Run post-install scripts (without running package:discover to avoid cache issues)
+RUN composer dump-autoload --no-scripts --optimize

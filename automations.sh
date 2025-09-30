@@ -35,6 +35,10 @@ if [ "$DISABLE_DEFAULT_CONFIG" = "false" ] && [ -f "$APP_BASE_DIR/artisan" ] && 
     php artisan view:clear 2>/dev/null || true
     php artisan cache:clear 2>/dev/null || true
 
+    # Rebuild package manifest with production dependencies only
+    echo "📦 Discovering packages..."
+    php artisan package:discover --ansi 2>/dev/null || true
+
     # Fix storage permissions for mounted volumes
     echo "🔧 Setting up storage permissions..."
     mkdir -p storage/logs storage/framework/{cache,sessions,views} storage/app bootstrap/cache 2>/dev/null || true
