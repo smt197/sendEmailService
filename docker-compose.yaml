@@ -14,7 +14,7 @@ services:
       - OCTANE_ADMIN_PORT=2019
       - APP_NAME=${APP_NAME}
       - APP_ENV=${APP_ENV}
-      - APP_KEY=${APP_KEY} # Doit être généré
+      - APP_KEY=${APP_KEY}
       - APP_DEBUG=${APP_DEBUG}
       - APP_URL=${APP_URL}
       - LOG_CHANNEL=${LOG_CHANNEL}
@@ -22,13 +22,12 @@ services:
       - LOG_DEPRECATIONS_CHANNEL=${LOG_DEPRECATIONS_CHANNEL}
       - LOG_LEVEL=${LOG_LEVEL}
       - DB_CONNECTION=${DB_CONNECTION}
-      - DB_HOST=${DB_HOST}
+      - DB_HOST=sendemail-db
       - DB_PORT=${DB_PORT}
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - QUEUE_CONNECTION=${QUEUE_CONNECTION}
-      # Variables pour l'envoi d'email
       - MAIL_MAILER=${MAIL_MAILER}
       - MAIL_HOST=${MAIL_HOST}
       - MAIL_PORT=${MAIL_PORT}
@@ -48,9 +47,9 @@ services:
 
   sendemail-db:
     image: mysql:8.0
-    container_name: ${DB_CONTAINER_NAME:-sendemail_db}
+    container_name: sendemail-db
     environment:
-      - MYSQL_DATABASE=${DB_DATABASE:-sendemail_db}
+      - MYSQL_DATABASE=${DB_DATABASE:-sendemail-db}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_ROOT_HOST=%
     volumes:
@@ -59,10 +58,10 @@ services:
       - microservices_network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
-      interval: 5s
+      interval: 3s
       timeout: 5s
-      retries: 20
-      start_period: 10s
+      retries: 30
+      start_period: 20s
     restart: unless-stopped
 
 networks:
