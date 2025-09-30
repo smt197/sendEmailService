@@ -49,7 +49,7 @@ services:
     image: mysql:8.0
     container_name: ${DB_CONTAINER_NAME:-sendemail_db}
     environment:
-      - MYSQL_DATABASE=${DB_DATABASE:-emailservice}
+      - MYSQL_DATABASE=${DB_DATABASE:-sendemail-db}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_ROOT_HOST=%
     volumes:
