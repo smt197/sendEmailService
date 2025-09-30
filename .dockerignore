@@ -12,4 +12,6 @@ README.md
 /storage/framework/views/*
 /storage/framework/cache/data/*
 /storage/logs/*.log
+/bootstrap/cache/*
+!bootstrap/cache/.gitignore
 npm-debug.log

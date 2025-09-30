@@ -28,6 +28,13 @@ fi
 if [ "$DISABLE_DEFAULT_CONFIG" = "false" ] && [ -f "$APP_BASE_DIR/artisan" ] && [ "$AUTORUN_ENABLED" = "true" ]; then
     echo "📋 Running Laravel automations..."
 
+    # Clear any cached config/routes/views from previous builds
+    echo "🧹 Clearing stale cache..."
+    php artisan config:clear 2>/dev/null || true
+    php artisan route:clear 2>/dev/null || true
+    php artisan view:clear 2>/dev/null || true
+    php artisan cache:clear 2>/dev/null || true
+
     # Fix storage permissions for mounted volumes
     echo "🔧 Setting up storage permissions..."
     mkdir -p storage/logs storage/framework/{cache,sessions,views} storage/app bootstrap/cache 2>/dev/null || true
@@ -58,7 +65,7 @@ if [ "$DISABLE_DEFAULT_CONFIG" = "false" ] && [ -f "$APP_BASE_DIR/artisan" ] && 
         php artisan migrate --force 2>/dev/null || echo "⚠️  Migration failed or not needed"
     fi
 
-    # Laravel caching
+    # Laravel caching (rebuild cache with production config)
     if [ "${AUTORUN_LARAVEL_CONFIG_CACHE:=true}" = "true" ]; then
         echo "⚡ Caching configuration..."
         php artisan config:cache 2>/dev/null || true
