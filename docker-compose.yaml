@@ -24,7 +24,7 @@ services:
       - LOG_DEPRECATIONS_CHANNEL=${LOG_DEPRECATIONS_CHANNEL}
       - LOG_LEVEL=${LOG_LEVEL}
       - DB_CONNECTION=${DB_CONNECTION}
-      - DB_HOST=sendemail-db
+      - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
