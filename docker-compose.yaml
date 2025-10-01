@@ -13,6 +13,8 @@ services:
       - OCTANE_PORT=8002
       - OCTANE_ADMIN_PORT=2019
       - APP_NAME=${APP_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+      - OCTANE_STATE_FILE=${OCTANE_STATE_FILE}
       - APP_ENV=${APP_ENV}
       - APP_KEY=${APP_KEY}
       - APP_DEBUG=${APP_DEBUG}
@@ -27,7 +29,19 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+      - SESSION_DRIVER=${SESSION_DRIVER}
+      - SESSION_LIFETIME=${SESSION_LIFETIME}
+      - SESSION_ENCRYPT=${SESSION_ENCRYPT}
+      - SESSION_PATH=${SESSION_PATH}
+      - SESSION_DOMAIN=${SESSION_DOMAIN}
       - QUEUE_CONNECTION=${QUEUE_CONNECTION}
+      - CACHE_STORE=${CACHE_STORE}
+      - CACHE_PREFIX=${CACHE_PREFIX}
+      - MEMCACHED_HOST=${MEMCACHED_HOST}
+      - REDIS_CLIENT=${REDIS_CLIENT}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=${REDIS_PORT}
       - MAIL_MAILER=${MAIL_MAILER}
       - MAIL_HOST=${MAIL_HOST}
       - MAIL_PORT=${MAIL_PORT}
@@ -35,31 +49,17 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD}
       - MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS}
       - MAIL_FROM_NAME="${APP_NAME}"
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+      - RABBITMQ_VHOST=${RABBITMQ_VHOST}
     volumes:
       - sendemail_storage_data:/var/www/html/storage/app
       - sendemail_logs_data:/var/www/html/storage/logs
     networks:
       - microservices_network
-
-
-#   sendemail-db:
-#     image: mysql:8.0
-#     container_name: sendemail-db
-#     environment:
-#       - MYSQL_DATABASE=${DB_DATABASE:-sendemail-db}
-#       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-#       - MYSQL_ROOT_HOST=%
-#     volumes:
-#       - sendemail_db_data:/var/lib/mysql
-#     networks:
-#       - microservices_network
-#     healthcheck:
-#       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
-#       interval: 3s
-#       timeout: 5s
-#       retries: 30
-#       start_period: 20s
-#     restart: unless-stopped
+    restart: unless-stopped
 
 networks:
   microservices_network:
