@@ -12,19 +12,6 @@ echo "🚀 Starting Laravel automations..."
 
 cd "$APP_BASE_DIR"
 
-# Wait for .env file (Coolify injects it)
-MAX_WAIT=30
-COUNTER=0
-while [ ! -f .env ] && [ $COUNTER -lt $MAX_WAIT ]; do
-    echo "⏳ Waiting for .env file... ($COUNTER/$MAX_WAIT)"
-    sleep 1
-    COUNTER=$((COUNTER + 1))
-done
-
-if [ ! -f .env ]; then
-    echo "⚠️  Warning: .env file not found after ${MAX_WAIT}s"
-fi
-
 if [ "$DISABLE_DEFAULT_CONFIG" = "false" ] && [ -f "$APP_BASE_DIR/artisan" ] && [ "$AUTORUN_ENABLED" = "true" ]; then
     echo "📋 Running Laravel automations..."
 

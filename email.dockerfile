@@ -19,7 +19,8 @@ RUN install-php-extensions \
        redis \
        opcache \
        pcntl \
-       sockets
+       sockets \
+       intl
 
 # Copy composer files first for better caching
 COPY --chown=www-data:www-data composer.json composer.lock ./
