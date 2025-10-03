@@ -29,15 +29,11 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
-      - SANCTUM_STATEFUL_DOMAINS=${SANCTUM_STATEFUL_DOMAINS}
       - SESSION_DRIVER=${SESSION_DRIVER}
       - SESSION_LIFETIME=${SESSION_LIFETIME}
       - SESSION_ENCRYPT=${SESSION_ENCRYPT}
       - SESSION_PATH=${SESSION_PATH}
       - SESSION_DOMAIN=${SESSION_DOMAIN}
-      - SESSION_SECURE_COOKIE=${SESSION_SECURE_COOKIE}
-      - SESSION_SAME_SITE=${SESSION_SAME_SITE}
-      - SESSION_HTTP_ONLY=${SESSION_HTTP_ONLY}
       - QUEUE_CONNECTION=${QUEUE_CONNECTION}
       - CACHE_STORE=${CACHE_STORE}
       - CACHE_PREFIX=${CACHE_PREFIX}
@@ -60,6 +56,7 @@ services:
       - RABBITMQ_VHOST=${RABBITMQ_VHOST}
     volumes:
       - sendemail_storage_data:/var/www/html/storage/app
+      - sendemail_logs_data:/var/www/html/storage/logs
     networks:
       - microservices_network
     restart: unless-stopped
@@ -70,4 +67,8 @@ networks:
 
 volumes:
   sendemail_storage_data:
+    driver: local
+  sendemail_logs_data:
+    driver: local
+  sendemail_db_data:
     driver: local
