@@ -56,7 +56,6 @@ services:
       - RABBITMQ_VHOST=${RABBITMQ_VHOST}
     volumes:
       - sendemail_storage_data:/var/www/html/storage/app
-      - sendemail_logs_data:/var/www/html/storage/logs
     networks:
       - microservices_network
     restart: unless-stopped
@@ -67,8 +66,4 @@ networks:
 
 volumes:
   sendemail_storage_data:
-    driver: local
-  sendemail_logs_data:
-    driver: local
-  sendemail_db_data:
     driver: local
