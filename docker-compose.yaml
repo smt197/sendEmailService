@@ -55,7 +55,7 @@ services:
       - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
       - RABBITMQ_VHOST=${RABBITMQ_VHOST}
     volumes:
-      - sendemail_storage_data:/var/www/html/storage/app
+      - sendemail_storage_data:/app/storage
     networks:
       - microservices_network
     restart: unless-stopped
